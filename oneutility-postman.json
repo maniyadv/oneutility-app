@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "4740f79a-89fa-417f-9152-c22a4bd721eb",
+		"name": "Oneutility",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a665b9a-72c3-4a6e-bec7-b1f65a11bfa7",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							" tests[\"Status code is 200\"] = responseCode.code === 200;",
+							" tests[\"Response time is less than 3000ms\"] = responseTime < 3000;",
+							" ",
+							" postman.setEnvironmentVariable(\"access_token\", data.access_token);",
+							"",
+							" var schema = {",
+							"     \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"     \"type\": \"object\",",
+							"     \"properties\": {",
+							"         \"access_token\": {\"type\": \"string\"}",
+							"     },  ",
+							"     \"required\":[\"access_token\"],",
+							"     \"additionalProperties\": false",
+							" };",
+							" ",
+							" tests[\"Valid JSON Structure\"] = tv4.validate(data, schema);",
+							" console.log(tv4.error);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "mani",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "m2@m.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "asdasd2",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "asdasd2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/{{apipath}}/register",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{apipath}}",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9710bf64-51c0-4dca-aab1-858b4f0a3b69",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							" tests[\"Status code is 200\"] = responseCode.code === 200;",
+							" tests[\"Response time is less than 3000ms\"] = responseTime < 3000;",
+							" ",
+							" postman.setEnvironmentVariable(\"access_token\", data.access_token);",
+							"",
+							" var schema = {",
+							"     \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"     \"type\": \"object\",",
+							"     \"properties\": {",
+							"         \"access_token\": {\"type\": \"string\"}",
+							"     },  ",
+							"     \"required\":[\"access_token\"],",
+							"     \"additionalProperties\": false",
+							" };",
+							" ",
+							" tests[\"Valid JSON Structure\"] = tv4.validate(data, schema);",
+							" console.log(tv4.error);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "m@m.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "asdasd2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/{{apipath}}/login",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{apipath}}",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
