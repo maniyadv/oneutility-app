@@ -11,4 +11,14 @@ class Provider extends Model
 
     protected $table = TABLE_PROVIDERS;
     protected $guarded = [];
+
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function getProduct($productName) {
+        return $this->products()->where(TABLE_PRODUCTS.'.name', 'like', "%$productName%")->first();
+    }
 }

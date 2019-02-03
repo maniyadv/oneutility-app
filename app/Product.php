@@ -13,17 +13,24 @@ class Product extends Model
     protected $guarded = [];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function provider() {
         return $this->belongsTo(Provider::class);
     }
 
 
-    /**
-     * The users blocked from the episode
-     */
     public function prices()
     {
         return $this->hasMany(ProductPrice::class);
     }
+
+
+    public function getPrice($variation) {
+        return $this->prices()->where(TABLE_PRODUCT_PRICES.'.variation', 'like', "%$variation%")->first();
+    }
+
+
 
 }

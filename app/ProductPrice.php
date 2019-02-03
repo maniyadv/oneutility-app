@@ -11,4 +11,11 @@ class ProductPrice extends Model
 
     protected $table = TABLE_PRODUCT_PRICES;
     protected $guarded = [];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
 }

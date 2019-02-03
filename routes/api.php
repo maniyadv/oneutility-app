@@ -27,6 +27,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'API'], function () {
     // private routes
     Route::middleware('auth:api')->group(function () {
         Route::get('/logout', 'AuthController@logout')->name('logout');
+
+        // API routes for pricing
+        Route::get('/prices', 'ProductPriceController@index')->name('product.prices');
+
     });
 
 });
