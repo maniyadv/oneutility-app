@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    One Utility Bill App
                 </div>
 
                 <div class="links">

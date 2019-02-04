@@ -6,8 +6,16 @@
     "description": "TODO: Add Description",
     "contact": {}
   },
-  "host": "localhost:8000",
-  "basePath": "/api/v1",
+  "host": "example.com",
+  "basePath": "/:DefaultParameterValue/DefaultParameterValue",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "http://example.com/:DefaultParameterValue/DefaultParameterValue",
+      "scopes": {}
+    }
+  },
   "schemes": [
     "http"
   ],
@@ -20,7 +28,7 @@
   "paths": {
     "/register": {
       "post": {
-        "description": "TODO: Add Description",
+        "description": "Allows user to register on the platform.",
         "summary": "Register",
         "tags": [
           "Misc"
@@ -74,12 +82,17 @@
             "description": "",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
       }
     },
     "/login": {
       "post": {
-        "description": "TODO: Add Description",
+        "description": "API to allow login of the user on the platform.\nUses (passport auth)",
         "summary": "Login",
         "tags": [
           "Misc"
@@ -119,8 +132,328 @@
             "description": "",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
       }
+    },
+    "/prices": {
+      "get": {
+        "description": "**This API returns pricing info for a product**\n\nAPI accepts following params and returns price information in response.\n- provider_name\n- product_name\n- product_variation (optional)\n\nAPI does matches similar Provider name / Product name. Names need not to be exact.\n\nCheck sample response for response structure.\n\n*product_variation can be one of the following-*\n- northern\n- midlands\n- southern\n\n\n*This API requires user authorization*",
+        "summary": "Get Product Price",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "PricesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "product_name",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetProductPrice(Success)"
+            },
+            "examples": {
+              "application/json": {
+                "price": {
+                  "price_value": 40,
+                  "currency": "GBP",
+                  "variation": "none"
+                }
+              }
+            },
+            "headers": {
+              "Host": {
+                "type": "string",
+                "default": "127.0.0.1:8000"
+              },
+              "Date": {
+                "type": "string",
+                "default": "Mon, 04 Feb 2019 11:21:18 +0000"
+              },
+              "Connection": {
+                "type": "string",
+                "default": "close"
+              },
+              "X-Powered-By": {
+                "type": "string",
+                "default": "PHP/7.1.19"
+              },
+              "Cache-Control": {
+                "type": "string",
+                "default": "no-cache, private"
+              },
+              "X-RateLimit-Limit": {
+                "type": "string",
+                "default": "60"
+              },
+              "X-RateLimit-Remaining": {
+                "type": "string",
+                "default": "59"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/UpdateProductPrice(Failure)"
+            },
+            "examples": {
+              "application/json": {
+                "errors": [
+                  {
+                    "message": "No Valid Record found based on input data",
+                    "code": 400,
+                    "parameter": ""
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "patch": {
+        "description": "**This API update price for a product**\n\nAPI accepts following params and returns price information in response.\n- provider_name\n- product_name\n- product_variation (optional)\n- new_price\n\nAPI does matches similar Provider name / Product name. Names need not to be exact.\n\nCheck sample response for response structure.\n\n*product_variation can be one of the following-*\n- northern\n- midlands\n- southern\n\n\n*This API requires user authorization*",
+        "summary": "Update Product Price",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "PricesPatch",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "product_name",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "product_variation",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "new_price",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateProductPrice(Success)"
+            },
+            "examples": {
+              "application/json": {
+                "status": "success",
+                "msg": "Price updated successfully"
+              }
+            },
+            "headers": {
+              "Host": {
+                "type": "string",
+                "default": "127.0.0.1:8000"
+              },
+              "Date": {
+                "type": "string",
+                "default": "Mon, 04 Feb 2019 12:28:33 +0000"
+              },
+              "Connection": {
+                "type": "string",
+                "default": "close"
+              },
+              "X-Powered-By": {
+                "type": "string",
+                "default": "PHP/7.1.19"
+              },
+              "Cache-Control": {
+                "type": "string",
+                "default": "no-cache, private"
+              },
+              "X-RateLimit-Limit": {
+                "type": "string",
+                "default": "60"
+              },
+              "X-RateLimit-Remaining": {
+                "type": "string",
+                "default": "57"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/UpdateProductPrice(Failure)"
+            },
+            "examples": {
+              "application/json": {
+                "errors": [
+                  {
+                    "message": "No Valid Record found based on input data",
+                    "code": 400,
+                    "parameter": ""
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "title": "Error",
+      "type": "object",
+      "properties": {
+        "message": {
+          "example": "No Valid Record found based on input data",
+          "type": "string"
+        },
+        "code": {
+          "example": 400,
+          "type": "integer",
+          "format": "int32"
+        },
+        "parameter": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message",
+        "code",
+        "parameter"
+      ]
+    },
+    "GetProductPrice(Success)": {
+      "title": "GetProductPrice(Success)",
+      "example": {
+        "price": {
+          "price_value": 40,
+          "currency": "GBP",
+          "variation": "none"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "price": {
+          "$ref": "#/definitions/Price"
+        }
+      },
+      "required": [
+        "price"
+      ]
+    },
+    "Price": {
+      "title": "Price",
+      "type": "object",
+      "properties": {
+        "price_value": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "variation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "price_value",
+        "currency",
+        "variation"
+      ]
+    },
+    "UpdateProductPrice(Success)": {
+      "title": "UpdateProductPrice(Success)",
+      "example": {
+        "status": "success",
+        "msg": "Price updated successfully"
+      },
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "msg": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "msg"
+      ]
+    },
+    "UpdateProductPrice(Failure)": {
+      "title": "UpdateProductPrice(Failure)",
+      "example": {
+        "errors": [
+          {
+            "message": "No Valid Record found based on input data",
+            "code": 400,
+            "parameter": ""
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "required": [
+        "errors"
+      ]
     }
   },
   "tags": [
