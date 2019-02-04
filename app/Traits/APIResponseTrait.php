@@ -91,6 +91,18 @@ trait APIResponseTrait
         ]);
     }
 
+    /**
+     * Send an empty response
+     *
+     * @param int $statusCode
+     * @return Response
+     */
+    public function sendSuccessResponse($msg, $headers =[])
+    {
+
+        $data = [ 'status' => STATUS_SUCCESS, 'msg' => $msg ];
+        return Response::json($data, $this->getStatusCode(), $headers);
+    }
 
     /**
      * Send an empty response
@@ -113,6 +125,7 @@ trait APIResponseTrait
     public function handleException(Exception $e)
     {
         Log::error($e);
+        $this->addError(trans('api.something-went-wrong'), HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR);
         return $this->sendErrorResponse();
     }
 
