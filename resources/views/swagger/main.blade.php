@@ -41,7 +41,7 @@
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "https://api.jsonbin.io/b/5c56da834c4430170a98ce84",
+        url: "https://api.jsonbin.io/b/5c58601da3fb18257acee5c1/1",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
