@@ -57,6 +57,9 @@ Postman Documentation URL -
 
 (Environments are committed in codebase)
 
+Swagger Docs
+[http://testoneutility-env.2yuhtyqmyd.us-east-1.elasticbeanstalk.com/docs](http://testoneutility-env.2yuhtyqmyd.us-east-1.elasticbeanstalk.com/docs)
+
 ## Issues
 1. In case of error
 ``1071 Specified key was too long; max key length is 767 bytes ``
