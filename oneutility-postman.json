@@ -73,12 +73,11 @@
 					]
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/{{apipath}}/register",
+					"raw": "http://{{host}}/{{apipath}}/register",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
-					"port": "{{port}}",
 					"path": [
 						"{{apipath}}",
 						"register"
@@ -146,12 +145,11 @@
 					]
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/{{apipath}}/login",
+					"raw": "http://{{host}}/{{apipath}}/login",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
-					"port": "{{port}}",
 					"path": [
 						"{{apipath}}",
 						"login"
@@ -216,12 +214,11 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=Internet&product_name=100MB",
+					"raw": "http://{{host}}/{{apipath}}/prices?provider_name=Internet&product_name=100MB",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
-					"port": "{{port}}",
 					"path": [
 						"{{apipath}}",
 						"prices"
@@ -467,12 +464,11 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=mpower&product_name=Standard&product_variation=northern&new_price=37",
+					"raw": "http://{{host}}/{{apipath}}/prices?provider_name=mpower&product_name=Standard&product_variation=northern&new_price=37",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
-					"port": "{{port}}",
 					"path": [
 						"{{apipath}}",
 						"prices"
