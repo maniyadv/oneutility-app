@@ -34,7 +34,9 @@ Postman - For API testing via Postman, import postman collection in postman and 
 results for APIs in Tests tab of postman.
 
 Laravel Tests - Run following commands
+
 ``
+./vendor/bin/phpunit
 ``
  
 
@@ -50,6 +52,10 @@ API URL -
 [http://testoneutility-env.2yuhtyqmyd.us-east-1.elasticbeanstalk.com/api/v1](http://testoneutility-env.2yuhtyqmyd.us-east-1.elasticbeanstalk.com/api/v1)
 
 
+Postman Documentation URL -
+[https://documenter.getpostman.com/view/298066/RztmsUy8](https://documenter.getpostman.com/view/298066/RztmsUy8)
+
+(Environments are committed in codebase)
 
 ## Issues
 1. In case of error
