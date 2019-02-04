@@ -57,17 +57,17 @@
 						},
 						{
 							"key": "email",
-							"value": "m2@m.com",
+							"value": "m3@m.com",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "asdasd2",
+							"value": "password",
 							"type": "text"
 						},
 						{
 							"key": "password_confirmation",
-							"value": "asdasd2",
+							"value": "password",
 							"type": "text"
 						}
 					]
@@ -83,7 +83,8 @@
 						"{{apipath}}",
 						"register"
 					]
-				}
+				},
+				"description": "Allows user to register on the platform."
 			},
 			"response": []
 		},
@@ -155,9 +156,519 @@
 						"{{apipath}}",
 						"login"
 					]
-				}
+				},
+				"description": "API to allow login of the user on the platform.\nUses (passport auth)"
 			},
 			"response": []
+		},
+		{
+			"name": "Get Product Price",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af54eed6-8ec3-48b0-85c9-04712c13a6d2",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							" tests[\"Status code is 200\"] = responseCode.code === 200;",
+							" tests[\"Response time is less than 3000ms\"] = responseTime < 3000;",
+							" ",
+							" var schema = {",
+							"     \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"     \"type\": \"object\",",
+							"     \"properties\": {",
+							"         \"price\": {",
+							"             \"type\": \"object\",",
+							"             \"properties\": {",
+							"                 \"price_value\": {\"type\": \"number\"},",
+							"                 \"currency\":    {\"type\": \"string\"},                 ",
+							"                 \"variation\":   {\"type\": \"string\"}                 ",
+							"             }",
+							"         }",
+							"     },  ",
+							"     \"required\":[\"price\"],",
+							"     \"additionalProperties\": false",
+							" };",
+							" ",
+							" tests[\"Valid JSON Structure\"] = tv4.validate(data, schema);",
+							" console.log(tv4.error);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=Internet&product_name=100MB",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{apipath}}",
+						"prices"
+					],
+					"query": [
+						{
+							"key": "provider_name",
+							"value": "Internet",
+							"description": "required"
+						},
+						{
+							"key": "product_name",
+							"value": "100MB",
+							"description": "required"
+						},
+						{
+							"key": "product_variation",
+							"value": "northern",
+							"description": "optional",
+							"disabled": true
+						}
+					]
+				},
+				"description": "**This API returns pricing info for a product**\n\nAPI accepts following params and returns price information in response.\n- provider_name\n- product_name\n- product_variation (optional)\n\nAPI does matches similar Provider name / Product name. Names need not to be exact.\n\nCheck sample response for response structure.\n\n*product_variation can be one of the following-*\n- northern\n- midlands\n- southern\n\n\n*This API requires user authorization*"
+			},
+			"response": [
+				{
+					"name": "Get Product Price (Failure)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=Wrong name&product_name=200MB&product_variation=",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apipath}}",
+								"prices"
+							],
+							"query": [
+								{
+									"key": "provider_name",
+									"value": "Wrong name",
+									"description": "required"
+								},
+								{
+									"key": "product_name",
+									"value": "200MB",
+									"description": "required"
+								},
+								{
+									"key": "product_variation",
+									"value": "",
+									"description": "optional"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 11:38:24 +0000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 11:38:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.19"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "58"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errors\": [\n        {\n            \"message\": \"No Valid Record found based on input data\",\n            \"code\": 400,\n            \"parameter\": \"\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Get Product Price (Success)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=Internet&product_name=200MB&product_variation=",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apipath}}",
+								"prices"
+							],
+							"query": [
+								{
+									"key": "provider_name",
+									"value": "Internet",
+									"description": "required"
+								},
+								{
+									"key": "product_name",
+									"value": "200MB",
+									"description": "required"
+								},
+								{
+									"key": "product_variation",
+									"value": "",
+									"description": "optional"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 11:21:18 +0000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 11:21:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.19"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"price\": {\n        \"price_value\": 40,\n        \"currency\": \"GBP\",\n        \"variation\": \"none\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Product Price",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5f7a6317-9215-4af9-9969-4fab504d5c6f",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							" tests[\"Status code is 200\"] = responseCode.code === 200;",
+							" tests[\"Response time is less than 3000ms\"] = responseTime < 3000;",
+							" ",
+							" tests[\"Status is success\"] = data.status === 'success'",
+							" ",
+							" var schema = {",
+							"     \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"     \"type\": \"object\",",
+							"     \"properties\": {",
+							"        \"status\": {\"type\": \"string\"},  ",
+							"        \"msg\": {\"type\": \"string\"}        ",
+							"     },  ",
+							"     \"required\":[\"status\"],",
+							"     \"additionalProperties\": false",
+							" };",
+							" ",
+							" tests[\"Valid JSON Structure\"] = tv4.validate(data, schema);",
+							" console.log(tv4.error);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=mpower&product_name=Standard&product_variation=northern&new_price=37",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{apipath}}",
+						"prices"
+					],
+					"query": [
+						{
+							"key": "provider_name",
+							"value": "mpower"
+						},
+						{
+							"key": "product_name",
+							"value": "Standard"
+						},
+						{
+							"key": "product_variation",
+							"value": "northern"
+						},
+						{
+							"key": "new_price",
+							"value": "37"
+						}
+					]
+				},
+				"description": "**This API update price for a product**\n\nAPI accepts following params and returns price information in response.\n- provider_name\n- product_name\n- product_variation (optional)\n- new_price\n\nAPI does matches similar Provider name / Product name. Names need not to be exact.\n\nCheck sample response for response structure.\n\n*product_variation can be one of the following-*\n- northern\n- midlands\n- southern\n\n\n*This API requires user authorization*"
+			},
+			"response": [
+				{
+					"name": "Update Product Price (Success)",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=mpower&product_name=Standard&product_variation=northern&new_price=37",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apipath}}",
+								"prices"
+							],
+							"query": [
+								{
+									"key": "provider_name",
+									"value": "mpower"
+								},
+								{
+									"key": "product_name",
+									"value": "Standard"
+								},
+								{
+									"key": "product_variation",
+									"value": "northern"
+								},
+								{
+									"key": "new_price",
+									"value": "37"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 12:28:33 +0000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 12:28:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.19"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "57"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"msg\": \"Price updated successfully\"\n}"
+				},
+				{
+					"name": "Update Product Price (Failure)",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{apipath}}/prices?provider_name=mpower&product_name=Standard&new_price=37",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apipath}}",
+								"prices"
+							],
+							"query": [
+								{
+									"key": "provider_name",
+									"value": "mpower"
+								},
+								{
+									"key": "product_name",
+									"value": "Standard"
+								},
+								{
+									"key": "product_variation",
+									"value": "northern",
+									"disabled": true
+								},
+								{
+									"key": "new_price",
+									"value": "37"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 12:28:54 +0000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 04 Feb 2019 12:28:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.19"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "56"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errors\": [\n        {\n            \"message\": \"No Valid Record found based on input data\",\n            \"code\": 400,\n            \"parameter\": \"\"\n        }\n    ]\n}"
+				}
+			]
 		}
 	]
 }
