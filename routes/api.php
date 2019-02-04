@@ -28,8 +28,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'API'], function () {
     Route::middleware('auth:api')->group(function () {
         Route::get('/logout', 'AuthController@logout')->name('logout');
 
-        // API routes for pricing
-        Route::get('/prices', 'ProductPriceController@show')->name('product.prices');
+        // API routes for pricing (Get pricing for both Broadband and Energy)
+        Route::get('/prices', 'ProductPriceController@show')->name('product.prices.show');
+        Route::patch('/prices', 'ProductPriceController@update')->name('product.prices.update');
 
     });
 

@@ -21,16 +21,23 @@ class Product extends Model
     }
 
 
+    /**
+     * Get all type of price for a product
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function prices()
     {
         return $this->hasMany(ProductPrice::class);
     }
 
 
+    /**
+     * Get a product price
+     * @param $variation
+     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|null|object
+     */
     public function getPrice($variation) {
-        return $this->prices()->where(TABLE_PRODUCT_PRICES.'.variation', 'like', "%$variation%")->first();
+        return $this->prices()->where(TABLE_PRODUCT_PRICES.'.variation', '=', $variation)->first();
     }
-
-
 
 }

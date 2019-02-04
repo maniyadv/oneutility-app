@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductPrice extends Model
 {
-    Use SoftDeletes;
+    use SoftDeletes;
 
     protected $table = TABLE_PRODUCT_PRICES;
     protected $guarded = [];

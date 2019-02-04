@@ -11,6 +11,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\API\ProductPriceRequest;
+use App\Http\Requests\API\ProductPriceUpdateRequest;
 use App\Http\Transformers\API\ProductPriceTransformer;
 use App\Provider;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -36,7 +38,7 @@ class ProductPriceController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request) {
+    public function show(ProductPriceRequest $request) {
 
         try {
             $providerName = $request->get('provider_name');
@@ -66,19 +68,57 @@ class ProductPriceController extends Controller
 
 
     /**
+     * Update price for Both Brodband and Energy providers
+     * In case of Broadband Provider skip product_variation in input
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Support\Facades\Response
+     */
+    public function update(ProductPriceUpdateRequest $request) {
+        try {
+            $providerName = $request->get('provider_name');
+            $productName  = $request->get('product_name');
+            $variation    = $request->get('product_variation', DEFAULT_PRICE_VARIATION);
+            $newPrice     = $request->get('new_price');
+
+            $productPrice = $this->getProductPrice($providerName, $productName, $variation);
+
+            if ($productPrice) {
+                $productPrice->price = $newPrice;
+                $productPrice->save();
+                return $this->sendSuccessResponse(trans('api.price-update-successful'));
+            }
+
+            $this->addError(trans('api.no-valid-record-found'), HTTP_STATUS_CODE_BAD_REQUEST);
+            return $this->sendErrorResponse(HTTP_STATUS_CODE_BAD_REQUEST);
+
+        } catch (ModelNotFoundException $exception) {
+            Log::error($exception);
+            return $this->handleException($exception);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return $this->handleException($exception);
+        }
+    }
+
+
+    /**
      * Get ProductPrice model
      * @param $providerName
      * @param $productName
      * @param string $variation
      * @return null
      */
-    public function getProductPrice($providerName, $productName, $variation = DEFAULT_PRICE_VARIATION) {
+    public function getProductPrice($providerName, $productName, $variation) {
         $provider = Provider::where('name', 'like', "%$providerName%")->first();
 
         if ($provider) {
             $product = $provider->getProduct($productName);
 
             if ($product) {
+
+                if (empty($variation)) $variation = DEFAULT_PRICE_VARIATION;
+
                 return $product->getPrice($variation);
             }
         }
